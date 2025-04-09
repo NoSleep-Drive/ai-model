@@ -14,12 +14,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       - name: Install dependencies & Deploy
         run: |
           cd /data1/team12
           if [ ! -d "ai-model" ]; then
-            GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone git@github.com:NoSleep-Drive/ai-model.git
+            git clone git@github.com:NoSleep-Drive/ai-model.git
           else
             cd ai-model
-            GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git pull origin main
+            git pull origin main
           fi
