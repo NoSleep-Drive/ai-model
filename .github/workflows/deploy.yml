@@ -18,7 +18,8 @@ jobs:
         run: |
           cd /data1/team12
           if [ ! -d "ai-model" ]; then
-            git clone git@github.com:NoSleep-Drive/ai-model.git
+            GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git clone git@github.com:NoSleep-Drive/ai-model.git
           else
-            cd ai-model && git pull origin main
+            cd ai-model
+            GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no" git pull origin main
           fi
